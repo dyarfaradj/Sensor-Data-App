@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Nine",
-    "slug": "nine",
+    "name": "SensorApp",
+    "slug": "sensorapp",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
