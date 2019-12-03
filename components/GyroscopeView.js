@@ -51,7 +51,6 @@ export default class GyroscopeSensor extends React.Component {
         <Text style={styles.text}>
           x: {round(x)} y: {round(y)} z: {round(z)}
         </Text>
-
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this._toggle} style={styles.button}>
             <Text>Toggle</Text>
