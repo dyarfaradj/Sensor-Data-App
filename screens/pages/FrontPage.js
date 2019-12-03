@@ -14,7 +14,7 @@ import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
 import * as NineMensMorriesAction from "../../actions/NineMensMorriesAction";
 import nineMensMorriesStore from "../../stores/NineMensMorriesStore";
-
+import AccelerometerView from "../../components/AccelerometerView";
 export default function FrontPage(props) {
   const [loadGameModalVisible, setLoadGameModalVisible] = useState(false);
   const [newGameModalVisible, setNewGameModalVisible] = useState(false);
@@ -44,7 +44,7 @@ export default function FrontPage(props) {
       <Header title="Home" navigation={props.navigation} />
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
         <ScrollView>
-          <Text>front page</Text>
+          <AccelerometerView />
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

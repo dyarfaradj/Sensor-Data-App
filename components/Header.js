@@ -44,7 +44,6 @@ export default class NavigationMenu extends Component {
           />
         }
         centerComponent={{ text: this.props.title, style: { color: "#fff" } }}
-        // rightComponent={{ icon: "home", color: "#fff" }}
       />
     );
   }
