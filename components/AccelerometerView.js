@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Accelerometer } from "expo-sensors";
 
-export default class AccelerometerSensor extends React {
+export default class AccelerometerSensor extends Component {
   state = {
     accelerometerData: {}
   };
@@ -78,3 +78,30 @@ function round(n) {
 
   return Math.floor(n * 100) / 100;
 }
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    marginTop: 15
+  },
+  button: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#eee",
+    padding: 10
+  },
+  middleButton: {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: "#ccc"
+  },
+  sensor: {
+    marginTop: 45,
+    paddingHorizontal: 10
+  },
+  text: {
+    textAlign: "center"
+  }
+});
