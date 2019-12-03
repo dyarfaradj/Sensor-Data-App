@@ -15,6 +15,7 @@ import Header from "../../components/Header";
 import * as NineMensMorriesAction from "../../actions/NineMensMorriesAction";
 import nineMensMorriesStore from "../../stores/NineMensMorriesStore";
 import AccelerometerView from "../../components/AccelerometerView";
+import GyroscopeView from "../../components/GyroscopeView";
 export default function FrontPage(props) {
   const [loadGameModalVisible, setLoadGameModalVisible] = useState(false);
   const [newGameModalVisible, setNewGameModalVisible] = useState(false);
@@ -45,6 +46,7 @@ export default function FrontPage(props) {
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
         <ScrollView>
           <AccelerometerView />
+          <GyroscopeView />
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
