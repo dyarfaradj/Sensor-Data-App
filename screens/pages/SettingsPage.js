@@ -12,6 +12,7 @@ import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
 import sensorStore from "../../stores/SensorStore";
 import GraphView from "../../components/GraphView";
+import * as SensorAction from "../../actions/SensorAction";
 
 export default class SettingsPage extends Component {
   constructor(props) {
@@ -22,8 +23,7 @@ export default class SettingsPage extends Component {
   }
 
   submit(value) {
-    console.log("value: ", value);
-    sensorStore.saveSetting(value);
+    SensorAction.saveSettings(value);
   }
 
   render() {

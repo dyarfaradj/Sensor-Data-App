@@ -7,14 +7,14 @@ import {
 } from "react-native";
 import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
-import AccelerometerView from "../../components/AccelerometerView";
+import TiltView from "../../components/TiltView";
 export default function FrontPage(props) {
   return (
     <View style={styles.container}>
       <Header title="Home" navigation={props.navigation} />
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
         <ScrollView>
-          <AccelerometerView />
+          <TiltView />
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
