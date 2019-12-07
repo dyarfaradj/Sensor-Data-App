@@ -4,7 +4,9 @@ import { Accelerometer } from "expo-sensors";
 
 export default class AccelerometerSensor extends Component {
   state = {
-    accelerometerData: {}
+    accelerometerData: {},
+    lastUpdate:0,
+    changeColor:'black'
   };
 
   componentDidMount() {
@@ -42,15 +44,55 @@ export default class AccelerometerSensor extends Component {
     this._subscription = null;
   };
 
+  isShaking = (shking) => {
+    if(shking ===true){
+      this.setState({ changeColor: 'red'});
+    }else{
+      this.setState({ changeColor: 'black'});
+    }
+  };
+
+  change = (n) => {
+    if (!n) {
+      return 0;
+    }
+  
+    return (Math.floor(n * 100) / 100) * 0.9;
+  };
+
+  onShake(x,y,z) {
+    if ((curTime - this.state.lastUpdate) > 1000) {
+      let curTime = Date.now();
+      let SHAKE_THRESHOLD = 2.25;
+      this.setState({ lastUpdate: curTime });
+      let acceleration = Math.sqrt(x*x + x*x + x*x - 9.81);
+      console.log("acceleration: " + acceleration);
+      if (acceleration > SHAKE_THRESHOLD) { 
+        console.log("Is shaking: " + acceleration);
+      }else{
+        this.setState({ lastUpdate: 0 });
+      }
+    }
+  };
+
   render() {
     let { x, y, z } = this.state.accelerometerData;
+    this.onShake(x,y,z);
     return (
-      <View style={styles.sensor}>
+      <View style={styles.sensor,{ color: this.state.changeColor }}>
         <Text style={styles.text}>
           Accelerometer: (in Gs where 1 G = 9.81 m s^-2)
         </Text>
         <Text style={styles.text}>
-          x: {round(x)} y: {round(y)} z: {round(z)}
+          x: {
+          (180 *( Math.atan( (round(x)/(Math.sqrt( (round(y)*round(y)) + (round(z)*round(z))))))))/Math.PI
+          } 
+           y: {
+          (( Math.atan( (round(y)/(Math.sqrt( (round(x)*round(x)) + (round(z)*round(z)))))))) * (-180/Math.PI)
+          }
+           z: {
+          (180 *( Math.atan( (round(z)/(Math.sqrt( (round(y)*round(y)) + (round(x)*round(x))))))))/Math.PI
+          }
         </Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this._toggle} style={styles.button}>
@@ -76,7 +118,7 @@ function round(n) {
     return 0;
   }
 
-  return Math.floor(n * 100) / 100;
+  return (Math.floor(n * 100) / 100) * 0.9;
 }
 
 const styles = StyleSheet.create({
@@ -102,6 +144,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   text: {
-    textAlign: "center"
+    textAlign: "center",
   }
 });
