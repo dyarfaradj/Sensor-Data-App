@@ -6,51 +6,34 @@ import {
   Switch,
   Slider,
   TouchableOpacity,
-  Image
+  Button
 } from "react-native";
 import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
-import nineMensMorriesStore from "../../stores/NineMensMorriesStore";
+import sensorStore from "../../stores/SensorStore";
 import GraphView from "../../components/GraphView";
 
 export default class SettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error1: "",
-      ChoseMen: [
-        nineMensMorriesStore.getSettings()[0],
-        nineMensMorriesStore.getSettings()[1]
-      ]
+      option: sensorStore.getSetting()
     };
   }
-  playerOne = data => {
-    let tmpArray = this.state.ChoseMen;
-    tmpArray[0] = data;
-    this.setState({
-      ChoseMen: tmpArray
-    });
-  };
-  playerTwo = data => {
-    let tmpArray = this.state.ChoseMen;
-    tmpArray[1] = data;
-    this.setState({
-      ChoseMen: tmpArray
-    });
-  };
 
-  submit = () => {
-    console.log("playerOne", this.state.ChoseMen);
-    nineMensMorriesStore.saveSetting(this.state.ChoseMen);
-  };
+  submit(value) {
+    console.log("value: ", value);
+    sensorStore.saveSetting(value);
+  }
+
   render() {
-    console.log("playerOne", nineMensMorriesStore.getSettings()[0]);
-    console.log("playerTwo", nineMensMorriesStore.getSettings()[1]);
-
     return (
       <View style={styles.container}>
         <Header title="Settings" navigation={this.props.navigation} />
-        <GraphView />
+        <Text>Current selected: {this.state.option}</Text>
+        <Button onPress={() => this.submit(0)} title="Accelerometer"></Button>
+        <Button onPress={() => this.submit(1)} title="Gyro"></Button>
+        <Button onPress={() => this.submit(2)} title="Magno"></Button>
       </View>
     );
   }

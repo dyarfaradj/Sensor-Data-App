@@ -5,36 +5,10 @@ import {
   View,
   ScrollView
 } from "react-native";
-import { Overlay } from "react-native-elements";
 import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
-import * as NineMensMorriesAction from "../../actions/NineMensMorriesAction";
-import nineMensMorriesStore from "../../stores/NineMensMorriesStore";
 import AccelerometerView from "../../components/AccelerometerView";
 export default function FrontPage(props) {
-  const [loadGameModalVisible, setLoadGameModalVisible] = useState(false);
-  const [newGameModalVisible, setNewGameModalVisible] = useState(false);
-  const dateOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric"
-  };
-
-  function onStartNewGame(isPlayingAgainstAI) {
-    nineMensMorriesStore.loadNewGame(isPlayingAgainstAI);
-    props.navigation.navigate("Game");
-    setNewGameModalVisible(false);
-  }
-
-  const onLoadSavedGame = gameId => {
-    nineMensMorriesStore.loadAGameToPlay(gameId);
-    props.navigation.navigate("Game");
-    setLoadGameModalVisible(false);
-  };
-
   return (
     <View style={styles.container}>
       <Header title="Home" navigation={props.navigation} />

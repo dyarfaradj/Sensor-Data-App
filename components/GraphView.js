@@ -5,6 +5,7 @@ import {
   VictoryZoomContainer,
   VictoryChart,
   VictoryGroup,
+  VictoryAxis,
   VictoryTheme
 } from "victory-native";
 
@@ -30,31 +31,39 @@ export default class GraphView extends React.Component {
       //     Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2)
       //   ).toFixed(3);
       let counter = state.counter;
+      let stateDataX = state.dataX;
+      let stateDataY = state.dataY;
+      let stateDataZ = state.dataZ;
+      stateDataX.push({
+        x: counter,
+        y: x,
+        l: "red"
+      });
+      stateDataY.push({
+        x: counter,
+        y: y,
+        l: "green"
+      });
+      stateDataZ.push({
+        x: counter,
+        y: z,
+        l: "blue"
+      });
+
+      if (counter >= 10 && counter % 5 == 0) {
+        stateDataX.shift();
+        stateDataY.shift();
+        stateDataZ.shift();
+      } else if (counter >= 50) {
+        stateDataX.shift();
+        stateDataY.shift();
+        stateDataZ.shift();
+      }
+
       return {
-        dataX: [
-          ...state.dataX,
-          {
-            x: counter,
-            y: x,
-            l: "red"
-          }
-        ],
-        dataY: [
-          ...state.dataY,
-          {
-            x: counter,
-            y: y,
-            l: "green"
-          }
-        ],
-        dataZ: [
-          ...state.dataZ,
-          {
-            x: counter,
-            y: z,
-            l: "blue"
-          }
-        ],
+        dataX: stateDataX,
+        dataY: stateDataY,
+        dataZ: stateDataZ,
         dataObj: { x: x, y: y, z: z },
         counter: counter + 1
       };
@@ -66,13 +75,15 @@ export default class GraphView extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Showing data for: {this.props.title} </Text>
-        <VictoryGroup
-          domain={{ y: [-5, 5] }}
-          domainPadding={{ y: [1, -1] }}
-          //   domainPadding={{ y: 5 }}
-          width={350}
-          theme={VictoryTheme.material}
-        >
+        <VictoryChart width={370} theme={VictoryTheme.material}>
+          <VictoryAxis
+            domain={{ y: [3, -3] }}
+            style={{
+              axis: { display: "none" },
+              ticks: { display: "none" },
+              tickLabels: { display: "none" }
+            }}
+          />
           <VictoryLine
             style={{
               data: { stroke: "red" }
@@ -91,9 +102,10 @@ export default class GraphView extends React.Component {
             }}
             data={this.state.dataZ}
           />
-        </VictoryGroup>
+        </VictoryChart>
         <Text>gravitational force in G (9.81 m s^-2):</Text>
         <Text>
+          {"\n"}
           Acceleration: {this.state.dataObj.x} {this.state.dataObj.y}{" "}
           {this.state.dataObj.z}
         </Text>

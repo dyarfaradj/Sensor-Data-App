@@ -4,7 +4,7 @@ import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import GameScreen from "../screens/GameScreen";
+import GraphScreen from "../screens/GraphScreen";
 
 export default class NavigationMenu extends Component {
   constructor() {
@@ -20,7 +20,6 @@ export default class NavigationMenu extends Component {
 const CustomDrawerComponent = props => (
   <SafeAreaView style={{ flex: 1 }}>
     <View style={{ height: 150, backgroundColor: "white" }}>
-      {/* <Image source={require('')}/> */}
       <ScrollView>
         <DrawerItems {...props} />
       </ScrollView>
@@ -31,7 +30,7 @@ const CustomDrawerComponent = props => (
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Home: HomeScreen,
-    Game: GameScreen,
+    Graph: GraphScreen,
     Settings: SettingsScreen
   },
   {

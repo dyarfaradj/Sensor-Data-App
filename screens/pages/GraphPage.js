@@ -4,7 +4,7 @@ import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
 import GyroscopeView from "../../components/GyroscopeView";
 
-export default class GamePage extends Component {
+export default class GraphPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -13,7 +13,7 @@ export default class GamePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header title="Game" navigation={this.props.navigation} />
+        <Header title="Graph" navigation={this.props.navigation} />
         <GyroscopeView />
       </View>
     );
