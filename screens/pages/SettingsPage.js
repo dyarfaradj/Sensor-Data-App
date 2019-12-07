@@ -24,16 +24,27 @@ export default class SettingsPage extends Component {
 
   submit(value) {
     SensorAction.saveSettings(value);
+    alert("You've selected " + this.getType(value));
+  }
+
+  getType(value) {
+    if (value === 0) {
+      return "Accelerometer";
+    } else if (value === 1) {
+      return "Gyroscope";
+    } else {
+      return "Magnetometer";
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Header title="Settings" navigation={this.props.navigation} />
-        <Text>Current selected: {this.state.option}</Text>
+        <Text>Current selected: {this.getType(this.state.option)}</Text>
         <Button onPress={() => this.submit(0)} title="Accelerometer"></Button>
-        <Button onPress={() => this.submit(1)} title="Gyro"></Button>
-        <Button onPress={() => this.submit(2)} title="Magno"></Button>
+        <Button onPress={() => this.submit(1)} title="Gyroscope"></Button>
+        <Button onPress={() => this.submit(2)} title="Magnetometer"></Button>
       </View>
     );
   }
