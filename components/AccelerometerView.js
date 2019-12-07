@@ -1,21 +1,39 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Accelerometer } from "expo-sensors";
+import { DeviceMotion } from "expo-sensors";
 
-export default class AccelerometerSensor extends Component {
-  state = {
-    accelerometerData: {},
-    lastUpdate: 0,
-    changeColor: "black"
-  };
+let SHAKE_THRESHOLD = 2.25;
+
+export default class AccelerometerView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      accelerometerData: {},
+      lastUpdate: 0,
+      changeColor: "black",
+      orientationValue: 0
+    };
+  }
 
   componentDidMount() {
     this._toggle();
+    // DeviceMotion.addListener(({ orientation }) => {
+    //   this._orientationDidChange(orientation);
+    // });
   }
 
   componentWillUnmount() {
     this._unsubscribe();
+    // DeviceMotion.removeAllListeners();
   }
+
+  // _orientationDidChange(rotation) {
+  //   if (this.state.orientationValue !== rotation) {
+  //     console.log(rotation);
+  //     this.setState({ orientationValue: rotation });
+  //   }
+  // }
 
   _toggle = () => {
     if (this._subscription) {
@@ -63,23 +81,33 @@ export default class AccelerometerSensor extends Component {
 
   onShake(x, y, z) {
     let curTime = Date.now();
-    let SHAKE_THRESHOLD = 2.25;
 
     if (curTime - this.state.lastUpdate > 1000) {
       let acceleration = Math.sqrt(x * x + x * x + x * x - 9.81);
       if (acceleration > SHAKE_THRESHOLD) {
         this.setState({ changeColor: "red" });
-        console.log("Is shaking: " + acceleration);
       } else {
-        this.setState({ changeColor: "black" });
-        this.setState({ lastUpdate: 0 });
+        this.setState({ changeColor: "black", lastUpdate: 0 });
       }
-      this.changeLastUpdate(curTime);
+      this.setState({ lastUpdate: curTime });
     }
   }
 
   render() {
     let { x, y, z } = this.state.accelerometerData;
+    // if (this.state.orientationValue === 90) {
+    //   y = y;
+    //   x = x;
+    // } else if (this.state.orientationValue === 0) {
+    //   y = x;
+    //   x = -y;
+    // } else if (this.state.orientationValue === -90) {
+    //   y = y;
+    //   x = -x;
+    // } else {
+    //   y = y;
+    //   x = -x;
+    // }
     y = (
       Math.atan(
         round(y) / Math.sqrt(round(x) * round(x) + round(z) * round(z))
@@ -99,25 +127,6 @@ export default class AccelerometerSensor extends Component {
           Tilt:{"\n"}
           {y}°
         </Text>
-        {/* <Text style={(styles.text, { color: this.state.changeColor })}>
-          x:{" "}
-          {(180 *
-            Math.atan(
-              round(x) / Math.sqrt(round(y) * round(y) + round(z) * round(z))
-            )) /
-            Math.PI}
-          y:{" "}
-          {Math.atan(
-            round(y) / Math.sqrt(round(x) * round(x) + round(z) * round(z))
-          ) *
-            (-180 / Math.PI)}
-          z:{" "}
-          {(180 *
-            Math.atan(
-              round(z) / Math.sqrt(round(y) * round(y) + round(x) * round(x))
-            )) /
-            Math.PI}
-        </Text> */}
       </View>
     );
   }
