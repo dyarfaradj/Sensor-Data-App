@@ -96,7 +96,8 @@ export default class AccelerometerSensor extends Component {
             color: this.state.changeColor
           }}
         >
-          Tilt: {y}°
+          Tilt:{"\n"}
+          {y}°
         </Text>
         {/* <Text style={(styles.text, { color: this.state.changeColor })}>
           x:{" "}
