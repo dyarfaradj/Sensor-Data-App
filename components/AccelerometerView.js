@@ -89,28 +89,34 @@ export default class AccelerometerSensor extends Component {
 
     return (
       <View style={styles.sensor}>
-        <Text style={(styles.text, { color: this.state.changeColor })}>
+        <Text
+          style={{
+            fontSize: 50,
+            textAlign: "center",
+            color: this.state.changeColor
+          }}
+        >
           Tilt: {y}°
         </Text>
-        <Text style={(styles.text, { color: this.state.changeColor })}>
-          {/* x:{" "}
+        {/* <Text style={(styles.text, { color: this.state.changeColor })}>
+          x:{" "}
           {(180 *
             Math.atan(
               round(x) / Math.sqrt(round(y) * round(y) + round(z) * round(z))
             )) /
-            Math.PI} */}
-          {/* y:{" "}
+            Math.PI}
+          y:{" "}
           {Math.atan(
             round(y) / Math.sqrt(round(x) * round(x) + round(z) * round(z))
           ) *
-            (-180 / Math.PI)} */}
-          {/* z:{" "}
+            (-180 / Math.PI)}
+          z:{" "}
           {(180 *
             Math.atan(
               round(z) / Math.sqrt(round(y) * round(y) + round(x) * round(x))
             )) /
-            Math.PI} */}
-        </Text>
+            Math.PI}
+        </Text> */}
       </View>
     );
   }
