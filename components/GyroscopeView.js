@@ -1,6 +1,7 @@
 import React from "react";
 import { Gyroscope } from "expo-sensors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import GraphView from "./GraphView";
 
 export default class GyroscopeSensor extends React.Component {
   state = {
@@ -46,26 +47,7 @@ export default class GyroscopeSensor extends React.Component {
     let { x, y, z } = this.state.gyroscopeData;
 
     return (
-      <View style={styles.sensor}>
-        <Text style={styles.text}>Gyroscope:</Text>
-        <Text style={styles.text}>
-          x: {round(x)} y: {round(y)} z: {round(z)}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._toggle} style={styles.button}>
-            <Text>Toggle</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={this._slow}
-            style={[styles.button, styles.middleButton]}
-          >
-            <Text>Slow</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._fast} style={styles.button}>
-            <Text>Fast</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <GraphView title="Gyroscope Sensor" data={this.state.gyroscopeData} />
     );
   }
 }

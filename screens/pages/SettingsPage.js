@@ -11,6 +11,7 @@ import {
 import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
 import Header from "../../components/Header";
 import nineMensMorriesStore from "../../stores/NineMensMorriesStore";
+import GraphView from "../../components/GraphView";
 
 export default class SettingsPage extends Component {
   constructor(props) {
@@ -49,18 +50,7 @@ export default class SettingsPage extends Component {
     return (
       <View style={styles.container}>
         <Header title="Settings" navigation={this.props.navigation} />
-        <View style={styles.settingsContainer}>
-          <Text style={styles.settingsLabel}>Choose a men for player 1:</Text>
-          <View style={styles.sliderContainer}></View>
-        </View>
-        <View style={styles.settingsContainer}>
-          <Text style={styles.settingsLabel}>Choose a men for player 2: </Text>
-          <View style={styles.sliderContainer}></View>
-        </View>
-        <View style={styles.sliderContainer}>
-          <Text style={styles.settingsLabel}>Player 1 men:</Text>
-          <Text style={styles.settingsLabel}>Player 2 men:</Text>
-        </View>
+        <GraphView />
       </View>
     );
   }
