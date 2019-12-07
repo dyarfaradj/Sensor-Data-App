@@ -44,12 +44,10 @@ export default class AccelerometerSensor extends Component {
     this._subscription = null;
   };
 
-  isShaking = (shking) => {
-    if(shking ===true){
-      this.setState({ changeColor: 'red'});
-    }else{
-      this.setState({ changeColor: 'black'});
-    }
+  
+
+  changeLastUpdate = (n) => {
+    this.setState({lastUpdate: n });
   };
 
   change = (n) => {
@@ -61,17 +59,25 @@ export default class AccelerometerSensor extends Component {
   };
 
   onShake(x,y,z) {
+    let curTime = Date.now();
+    let SHAKE_THRESHOLD = 2.25;
     if ((curTime - this.state.lastUpdate) > 1000) {
-      let curTime = Date.now();
-      let SHAKE_THRESHOLD = 2.25;
-      this.setState({ lastUpdate: curTime });
+      //console.log("curTime - lastUpdate: " + (curTime - this.state.lastUpdate));
+
       let acceleration = Math.sqrt(x*x + x*x + x*x - 9.81);
-      console.log("acceleration: " + acceleration);
+      //console.log("curTime: " + curTime);
+      //console.log("lastUpdate: " + this.state.lastUpdate);
+      //console.log("curTime - lastUpdate: " + (curTime - this.state.lastUpdate));
+
       if (acceleration > SHAKE_THRESHOLD) { 
+        this.setState({ changeColor: 'red'});
         console.log("Is shaking: " + acceleration);
       }else{
+        this.setState({ changeColor: 'black'});
         this.setState({ lastUpdate: 0 });
       }
+      this.changeLastUpdate(curTime);
+
     }
   };
 
@@ -79,11 +85,11 @@ export default class AccelerometerSensor extends Component {
     let { x, y, z } = this.state.accelerometerData;
     this.onShake(x,y,z);
     return (
-      <View style={styles.sensor,{ color: this.state.changeColor }}>
-        <Text style={styles.text}>
+      <View style={styles.sensor}>
+        <Text style={styles.text,{ color: this.state.changeColor }}>
           Accelerometer: (in Gs where 1 G = 9.81 m s^-2)
         </Text>
-        <Text style={styles.text}>
+        <Text style={styles.text,{ color: this.state.changeColor }}>
           x: {
           (180 *( Math.atan( (round(x)/(Math.sqrt( (round(y)*round(y)) + (round(z)*round(z))))))))/Math.PI
           } 
