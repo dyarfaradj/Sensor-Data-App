@@ -29,13 +29,14 @@ export default class GyroscopeSensor extends React.Component {
   };
 
   _fast = () => {
-    Gyroscope.setUpdateInterval(16);
+    Gyroscope.setUpdateInterval(1000);
   };
 
   _subscribe = () => {
     this._subscription = Gyroscope.addListener(result => {
       this.setState({ gyroscopeData: result });
     });
+    Gyroscope.setUpdateInterval(200);
   };
 
   _unsubscribe = () => {

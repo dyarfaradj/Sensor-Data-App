@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import { DeviceMotion } from "expo-sensors";
 
-let SHAKE_THRESHOLD = 2.25;
+let SHAKE_THRESHOLD = 20;
 
 export default class TiltView extends Component {
   constructor(props) {
@@ -14,6 +14,9 @@ export default class TiltView extends Component {
       changeColor: "black",
       orientationValue: 0
     };
+    this.oldX = 0;
+    this.oldY = 0;
+    this.oldZ = 0;
   }
 
   componentDidMount() {
@@ -44,7 +47,7 @@ export default class TiltView extends Component {
   };
 
   _slow = () => {
-    Accelerometer.setUpdateInterval(1000);
+    Accelerometer.setUpdateInterval(16);
   };
 
   _fast = () => {
@@ -53,12 +56,25 @@ export default class TiltView extends Component {
 
   _subscribe = () => {
     this._subscription = Accelerometer.addListener(accelerometerData => {
-      this.setState({ accelerometerData });
+      let x = accelerometerData.x;
+      let y = accelerometerData.y;
+      let z = accelerometerData.z;
       this.onShake(
         accelerometerData.x,
         accelerometerData.y,
         accelerometerData.z
       );
+      let a = 0.1;
+      x = (1 - a) * this.oldX + a * round(x);
+      y = (1 - a) * this.oldY + a * round(y);
+      z = (1 - a) * this.oldZ + a * round(z);
+      this.oldX = x;
+      this.oldY = y;
+      this.oldZ = z;
+      accelerometerData.x = x;
+      accelerometerData.y = y;
+      accelerometerData.z = z;
+      this.setState({ accelerometerData });
     });
   };
 
@@ -71,19 +87,16 @@ export default class TiltView extends Component {
     this.setState({ lastUpdate: n });
   };
 
-  change = n => {
-    if (!n) {
-      return 0;
-    }
-
-    return (Math.floor(n * 100) / 100) * 0.9;
-  };
-
   onShake(x, y, z) {
     let curTime = Date.now();
 
     if (curTime - this.state.lastUpdate > 1000) {
-      let acceleration = Math.sqrt(x * x + x * x + x * x - 9.81);
+      //let acceleration = Math.sqrt(x * x + y * y + z * z) - 9.81;
+      let diffTime = curTime - this.state.lastUpdate;
+
+      let acceleration =
+        (Math.abs(x + y + z - this.oldX - this.oldY - this.oldZ) / diffTime) *
+        10000;
       if (acceleration > SHAKE_THRESHOLD) {
         this.setState({ changeColor: "red" });
       } else {
@@ -108,12 +121,7 @@ export default class TiltView extends Component {
     //   y = y;
     //   x = -x;
     // }
-    y = (
-      Math.atan(
-        round(y) / Math.sqrt(round(x) * round(x) + round(z) * round(z))
-      ) *
-      (-180 / Math.PI)
-    ).toFixed(0);
+    y = (Math.atan(y / Math.sqrt(x * x + z * z)) * (-180 / Math.PI)).toFixed(0);
 
     return (
       <View style={styles.sensor}>
@@ -137,7 +145,7 @@ function round(n) {
     return 0;
   }
 
-  return (Math.floor(n * 100) / 100) * 0.9;
+  return Math.floor(n * 100) / 100;
 }
 
 const styles = StyleSheet.create({

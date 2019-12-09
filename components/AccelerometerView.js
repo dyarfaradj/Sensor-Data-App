@@ -28,6 +28,7 @@ export default class AccelerometerSensor extends Component {
     this._subscription = Accelerometer.addListener(accelerometerData => {
       this.setState({ accelerometerData });
     });
+    Accelerometer.setUpdateInterval(200);
   };
 
   _unsubscribe = () => {

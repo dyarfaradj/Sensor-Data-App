@@ -29,13 +29,14 @@ export default class MagnetometerSensor extends React.Component {
   };
 
   _fast = () => {
-    Magnetometer.setUpdateInterval(16);
+    Magnetometer.setUpdateInterval(1000);
   };
 
   _subscribe = () => {
     this._subscription = Magnetometer.addListener(result => {
       this.setState({ MagnetometerData: result });
     });
+    Magnetometer.setUpdateInterval(200);
   };
 
   _unsubscribe = () => {
