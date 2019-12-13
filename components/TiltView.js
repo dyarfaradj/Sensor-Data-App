@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import { DeviceMotion } from "expo-sensors";
 
-let SHAKE_THRESHOLD = 20;
+let SHAKE_THRESHOLD = -6;
 
 export default class TiltView extends Component {
   constructor(props) {
@@ -59,11 +59,7 @@ export default class TiltView extends Component {
       let x = accelerometerData.x;
       let y = accelerometerData.y;
       let z = accelerometerData.z;
-      this.onShake(
-        accelerometerData.x,
-        accelerometerData.y,
-        accelerometerData.z
-      );
+      this.onShake(x, y, z);
       let a = 0.1;
       x = (1 - a) * this.oldX + a * round(x);
       y = (1 - a) * this.oldY + a * round(y);
@@ -74,6 +70,7 @@ export default class TiltView extends Component {
       accelerometerData.x = x;
       accelerometerData.y = y;
       accelerometerData.z = z;
+
       this.setState({ accelerometerData });
     });
   };
@@ -91,12 +88,9 @@ export default class TiltView extends Component {
     let curTime = Date.now();
 
     if (curTime - this.state.lastUpdate > 1000) {
-      //let acceleration = Math.sqrt(x * x + y * y + z * z) - 9.81;
-      let diffTime = curTime - this.state.lastUpdate;
+      let acceleration = Math.sqrt(x * x + y * y + z * z) - 9.81;
 
-      let acceleration =
-        (Math.abs(x + y + z - this.oldX - this.oldY - this.oldZ) / diffTime) *
-        10000;
+      console.log(acceleration);
       if (acceleration > SHAKE_THRESHOLD) {
         this.setState({ changeColor: "red" });
       } else {
